@@ -27,7 +27,7 @@ module.exports = {
         allowNull: false,
         defaultValue: "CLIENT",
       },
-      isActive: {
+      is_active: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: true,

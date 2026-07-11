@@ -9,7 +9,7 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      userId: {
+      user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
@@ -19,8 +19,12 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-      dateTime: {
+      date_time: {
         type: Sequelize.DATE,
+        allowNull: false,
+      },
+      total_duration_minutes: {
+        type: Sequelize.INTEGER,
         allowNull: false,
       },
       status: {
@@ -28,11 +32,11 @@ module.exports = {
         allowNull: false,
         defaultValue: "PENDING",
       },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE,
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: Sequelize.DATE,
       },

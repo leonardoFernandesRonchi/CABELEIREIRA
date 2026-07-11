@@ -17,6 +17,7 @@ const sequelize = new Sequelize(
     host: process.env.DEV_DB_HOSTNAME,
     dialect: process.env.DEV_DB_DIALECT || "mysql",
     logging: false,
+    timezone: "-03:00",
   },
 );
 

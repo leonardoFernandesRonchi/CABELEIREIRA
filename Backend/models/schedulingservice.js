@@ -28,17 +28,6 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
       },
-
-      status: {
-        type: DataTypes.ENUM(
-          "PENDING",
-          "IN_PROGRESS",
-          "COMPLETED",
-          "CANCELLED",
-        ),
-        allowNull: false,
-        defaultValue: "PENDING",
-      },
     },
     {
       sequelize,

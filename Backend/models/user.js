@@ -5,9 +5,9 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
     static associate(models) {
-      this.hasMany(models.Service, {
+      this.hasMany(models.Scheduling, {
         foreignKey: "userId",
-        as: "services",
+        as: "schedulings",
       });
     }
   }
@@ -46,6 +46,26 @@ module.exports = (sequelize, DataTypes) => {
       sequelize,
       modelName: "User",
       underscored: true,
+
+      scopes: {
+        admins: {
+          where: {
+            role: "ADMIN",
+          },
+        },
+
+        clients: {
+          where: {
+            role: "CLIENT",
+          },
+        },
+
+        active: {
+          where: {
+            isActive: true,
+          },
+        },
+      },
     },
   );
 

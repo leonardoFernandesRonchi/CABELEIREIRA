@@ -5,6 +5,9 @@ const PORT = process.env.PORT || 3001;
 const express = require("express");
 const { sequelize } = require("./models");
 const usersRoutes = require("./routes/users");
+const servicesRoutes = require("./routes/services");
+const schedulingsRoutes = require("./routes/schedulings");
+const schedulingServicesRoutes = require("./routes/schedulingServices");
 const cookieParser = require("cookie-parser");
 
 const cors = require("cors");
@@ -36,16 +39,11 @@ const errorHandler = (err, req, res, next) => {
   res.status(500).json({ message: err.message || "Internal Server Error" });
 };
 
-(async () => {
-  try {
-    await sequelize.sync({ alter: true });
-  } catch (error) {
-    console.error("Erro:", error);
-  }
-})();
-
 app.get("/", (req, res) => res.json({ status: "API is running on /api" }));
 app.use("/api/users", usersRoutes);
+app.use("/api/services", servicesRoutes);
+app.use("/api/schedulings", schedulingsRoutes);
+app.use("/api/schedulingServices", schedulingServicesRoutes);
 app.use(errorHandler);
 
 app.listen(PORT, () =>

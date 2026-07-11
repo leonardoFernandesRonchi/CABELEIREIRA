@@ -2,14 +2,14 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("SchedulingServices", {
+    await queryInterface.createTable("scheduling_services", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      schedulingId: {
+      scheduling_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
@@ -19,7 +19,7 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-      serviceId: {
+      service_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
@@ -29,14 +29,11 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
       },
-      status: {
-        type: Sequelize.STRING,
-      },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE,
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: Sequelize.DATE,
       },
