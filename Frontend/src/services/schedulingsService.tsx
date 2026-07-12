@@ -1,6 +1,6 @@
 import { apiClient } from "./apiClient";
 
-const createScheduling = async ({ dateTime }: { dateTime: string }) => {
+const create = async ({ dateTime }: { dateTime: string }) => {
   const response = await apiClient.post("/schedulings", {
     dateTime,
   });
@@ -8,7 +8,7 @@ const createScheduling = async ({ dateTime }: { dateTime: string }) => {
   return response;
 };
 
-const updateScheduling = async ({
+const update = async ({
   schedulingId,
   dateTime,
   status,
@@ -25,7 +25,7 @@ const updateScheduling = async ({
   return response;
 };
 
-const deleteScheduling = async (schedulingId: number) => {
+const destroy = async (schedulingId: number) => {
   const response = await apiClient.delete(`/schedulings/${schedulingId}`);
 
   return response;
@@ -37,16 +37,16 @@ const fetchMySchedulings = async () => {
   return response;
 };
 
-const fetchSchedulings = async () => {
+const index = async () => {
   const response = await apiClient.get("/schedulings");
 
   return response;
 };
 
 export default {
-  createScheduling,
-  updateScheduling,
-  deleteScheduling,
+  create,
+  update,
+  destroy,
   fetchMySchedulings,
-  fetchSchedulings,
+  index,
 };

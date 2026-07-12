@@ -6,7 +6,7 @@ type ServiceData = {
   price: number;
 };
 
-const createService = async ({ name, description, price }: ServiceData) => {
+const create = async ({ name, description, price }: ServiceData) => {
   const response = await apiClient.post("/services", {
     name,
     description,
@@ -16,7 +16,7 @@ const createService = async ({ name, description, price }: ServiceData) => {
   return response;
 };
 
-const updateService = async ({
+const update = async ({
   serviceId,
   name,
   description,
@@ -33,20 +33,20 @@ const updateService = async ({
   return response;
 };
 
-const deleteService = async (serviceId: number) => {
+const destroy = async (serviceId: number) => {
   const response = await apiClient.delete(`/services/${serviceId}`);
 
   return response;
 };
 
-const getAllService = async () => {
+const index = async () => {
   const response = await apiClient.get("/services");
   return response;
 };
 
 export default {
-  createService,
-  updateService,
-  deleteService,
-  getAllService,
+  create,
+  update,
+  destroy,
+  index,
 };

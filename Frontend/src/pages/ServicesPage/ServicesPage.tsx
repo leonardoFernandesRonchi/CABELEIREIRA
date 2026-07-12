@@ -37,7 +37,7 @@ const ServicesPage = () => {
 
   const loadServices = async () => {
     try {
-      const response = await servicesService.getAllService();
+      const response = await servicesService.index();
       setServices(response.data);
     } catch (error) {
       console.error(error);
@@ -50,7 +50,7 @@ const ServicesPage = () => {
 
   const handleCreate = async (data: FormData) => {
     try {
-      await servicesService.createService(data);
+      await servicesService.create(data);
 
       setCreateModal(false);
       reset();
@@ -77,7 +77,7 @@ const ServicesPage = () => {
     if (!selectedService) return;
 
     try {
-      await servicesService.updateService({
+      await servicesService.update({
         ...data,
         serviceId: selectedService.id,
       });
@@ -101,7 +101,7 @@ const ServicesPage = () => {
     if (!serviceToDelete) return;
 
     try {
-      await servicesService.deleteService(serviceToDelete.id);
+      await servicesService.destroy(serviceToDelete.id);
 
       setDeleteModal(false);
       setServiceToDelete(null);

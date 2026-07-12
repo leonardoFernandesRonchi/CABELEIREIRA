@@ -89,7 +89,7 @@ const Agenda = () => {
 
   const loadSchedulings = async () => {
     try {
-      const response = await schedulingsService.fetchSchedulings();
+      const response = await schedulingsService.index();
 
       setSchedulings(response.data);
     } catch (error) {
@@ -99,7 +99,7 @@ const Agenda = () => {
 
   const loadServices = async () => {
     try {
-      const response = await servicesService.getAllService();
+      const response = await servicesService.index();
 
       setServices(response.data);
     } catch (error) {
@@ -157,11 +157,11 @@ const Agenda = () => {
       dateTime.setSeconds(0);
       dateTime.setMilliseconds(0);
 
-      const schedulingResponse = await schedulingsService.createScheduling({
+      const schedulingResponse = await schedulingsService.create({
         dateTime: dateTime.toISOString(),
       });
 
-      await schedulingServiceService.createSchedulingService({
+      await schedulingServiceService.create({
         schedulingId: schedulingResponse.data.id,
         serviceId: selectedService.id,
       });
@@ -186,7 +186,7 @@ const Agenda = () => {
     try {
       setLoading(true);
 
-      await schedulingsService.deleteScheduling(editingScheduling.id);
+      await schedulingsService.destroy(editingScheduling.id);
 
       setSnackbar({
         message: "Agendamento removido com sucesso",
@@ -223,7 +223,7 @@ const Agenda = () => {
 
       dateTime.setMinutes(Number(minute));
 
-      await schedulingsService.updateScheduling({
+      await schedulingsService.update({
         schedulingId: editingScheduling.id,
         dateTime: dateTime.toISOString(),
         status: editingScheduling.status,

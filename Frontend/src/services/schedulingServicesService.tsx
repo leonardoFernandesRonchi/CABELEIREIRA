@@ -1,6 +1,6 @@
 import { apiClient } from "./apiClient";
 
-const createSchedulingService = async ({
+const create = async ({
   schedulingId,
   serviceId,
 }: {
@@ -15,7 +15,7 @@ const createSchedulingService = async ({
   return response;
 };
 
-const deleteSchedulingService = async (schedulingServiceId: number) => {
+const destroy = async (schedulingServiceId: number) => {
   const response = await apiClient.delete(
     `/schedulingServices/${schedulingServiceId}`,
   );
@@ -24,6 +24,6 @@ const deleteSchedulingService = async (schedulingServiceId: number) => {
 };
 
 export default {
-  createSchedulingService,
-  deleteSchedulingService,
+  create,
+  destroy,
 };
