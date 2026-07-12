@@ -40,10 +40,20 @@ async function updateService({ serviceId, name, description, price }) {
   return updatedService;
 }
 
-const destroyService = async (serviceId) => {
+async function destroyService(serviceId) {
   const serviceExists = await Service.findOne({ where: { id: serviceId } });
 
-  serviceExists.destroy();
-};
+  await serviceExists.destroy();
+}
 
-module.exports = { createService, updateService, destroyService };
+async function getAllServices() {
+  const services = await Service.findAll();
+  return services;
+}
+
+module.exports = {
+  createService,
+  updateService,
+  destroyService,
+  getAllServices,
+};

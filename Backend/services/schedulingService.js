@@ -1,5 +1,5 @@
 const { Op } = require("sequelize");
-const { Scheduling } = require("../models");
+const { Scheduling, User } = require("../models");
 
 const {
   FieldRequiredError,
@@ -87,7 +87,13 @@ async function createScheduling({ userId, dateTime }) {
 }
 
 // Atualizar agendamento
-async function updateScheduling({ schedulingId, userId, role, dateTime }) {
+async function updateScheduling({
+  schedulingId,
+  userId,
+  role,
+  dateTime,
+  status,
+}) {
   const schedulingExists = await Scheduling.findByPk(schedulingId);
 
   if (!schedulingExists) {
@@ -126,21 +132,24 @@ async function updateScheduling({ schedulingId, userId, role, dateTime }) {
     throw new Error("Não é possível alterar para uma data passada");
   }
 
-  const conflict = await checkSchedulingConflict({
-    dateTime: newDateTime,
+  // const conflict = await checkSchedulingConflict({
+  //   dateTime: newDateTime,
 
-    schedulingId,
-  });
+  //   schedulingId,
+  // });
 
-  if (conflict) {
-    throw new Error("Esse horário entra em conflito com outro agendamento");
-  }
+  // if (conflict) {
+  //   throw new Error("Esse horário entra em conflito com outro agendamento");
+  // }
 
   if (dateTime !== undefined) {
     schedulingExists.dateTime = newDateTime;
   }
 
   schedulingExists.totalDurationMinutes = DEFAULT_DURATION_MINUTES;
+
+  schedulingExists.status =
+    status !== undefined ? status : schedulingExists.status;
 
   await schedulingExists.save();
 
@@ -186,6 +195,13 @@ async function getMySchedulings(userId) {
 // Buscar todos os agendamentos
 async function getAllSchedulings() {
   return await Scheduling.findAll({
+    include: [
+      {
+        model: User,
+        as: "user",
+        attributes: ["id", "username", "email"],
+      },
+    ],
     order: [["dateTime", "ASC"]],
   });
 }

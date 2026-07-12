@@ -25,7 +25,7 @@ const create = async (req, res, next) => {
 const update = async (req, res, next) => {
   try {
     const { schedulingId } = req.params;
-    const { dateTime, totalDurationMinutes } = req.body;
+    const { dateTime, totalDurationMinutes, status } = req.body;
     const { loggedUser } = req;
 
     const scheduling = await updateScheduling({
@@ -33,7 +33,7 @@ const update = async (req, res, next) => {
       userId: loggedUser.id,
       role: loggedUser.role,
       dateTime,
-      totalDurationMinutes,
+      status,
     });
 
     res.status(200).json(scheduling);

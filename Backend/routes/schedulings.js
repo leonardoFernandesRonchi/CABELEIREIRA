@@ -14,6 +14,6 @@ router.post("/", verifyToken, create);
 router.put("/:schedulingId", verifyToken, update);
 router.delete("/:schedulingId", verifyToken, destroy);
 router.get("/my", verifyToken, getMy);
-router.get("/", verifyToken, isAdmin, getAll);
+router.get("/", verifyToken, getAll);
 
 module.exports = router;
