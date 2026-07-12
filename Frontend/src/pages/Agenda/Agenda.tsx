@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
-import { Snackbar } from "@/components";
+import { Snackbar, BaseModal } from "@/components";
 
 import {
   schedulingsService,
@@ -40,6 +40,8 @@ const Agenda = () => {
   const isAdmin = user?.role === "ADMIN";
 
   const [schedulings, setSchedulings] = useState<Scheduling[]>([]);
+  const [suggestion, setSuggestion] = useState<any>(null);
+  const [showSuggestionModal, setShowSuggestionModal] = useState(false);
   const [services, setServices] = useState<Service[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [snackbar, setSnackbar] = useState<{
@@ -132,14 +134,53 @@ const Agenda = () => {
     });
   };
 
+  const createScheduling = async () => {
+    if (!selectedDate || !selectedHour || !selectedService) return;
+
+    const [hour, minute] = selectedHour.split(":");
+
+    const dateTime = new Date(selectedDate);
+
+    dateTime.setHours(Number(hour));
+    dateTime.setMinutes(Number(minute));
+    dateTime.setSeconds(0);
+    dateTime.setMilliseconds(0);
+
+    const schedulingResponse = await schedulingsService.create({
+      dateTime: dateTime.toISOString(),
+    });
+
+    await schedulingServiceService.create({
+      schedulingId: schedulingResponse.data.id,
+      serviceId: selectedService.id,
+    });
+
+    setSnackbar({
+      message: "Agendamento criado com sucesso",
+      variant: "success",
+    });
+
+    setSelectedDate(null);
+    setSelectedHour(null);
+    setSelectedService(null);
+
+    loadSchedulings();
+  };
+
   const handleCreateScheduling = async () => {
     if (!selectedDate || !selectedHour) {
-      alert("Selecione uma data e horário");
+      setSnackbar({
+        message: "Selecione uma data e horário",
+        variant: "error",
+      });
       return;
     }
 
     if (!selectedService) {
-      alert("Selecione um serviço");
+      setSnackbar({
+        message: "Selecione um serviço",
+        variant: "error",
+      });
       return;
     }
 
@@ -151,30 +192,26 @@ const Agenda = () => {
       const dateTime = new Date(selectedDate);
 
       dateTime.setHours(Number(hour));
-
       dateTime.setMinutes(Number(minute));
-
       dateTime.setSeconds(0);
       dateTime.setMilliseconds(0);
 
-      const schedulingResponse = await schedulingsService.create({
-        dateTime: dateTime.toISOString(),
+      const response = await schedulingsService.fetchSchedulingSuggestions(
+        dateTime.toISOString(),
+      );
+
+      if (response.data.hasSuggestion) {
+        setSuggestion(response.data);
+        setShowSuggestionModal(true);
+        return;
+      }
+
+      await createScheduling();
+    } catch (error: any) {
+      setSnackbar({
+        message: error.response?.data?.message || "Erro ao criar agendamento",
+        variant: "error",
       });
-
-      await schedulingServiceService.create({
-        schedulingId: schedulingResponse.data.id,
-        serviceId: selectedService.id,
-      });
-
-      alert("Agendamento criado com sucesso");
-
-      setSelectedDate(null);
-      setSelectedHour(null);
-      setSelectedService(null);
-
-      loadSchedulings();
-    } catch (error) {
-      console.error(error);
     } finally {
       setLoading(false);
     }
@@ -248,12 +285,32 @@ const Agenda = () => {
     }
   };
 
+  console.log(schedulings);
+
   return (
     <div className="max-w-7xl mx-auto p-6">
+      <BaseModal
+        open={showSuggestionModal}
+        setOpen={setShowSuggestionModal}
+        title="Sugestão de agendamento"
+        text={`Você já possui um agendamento nesta semana (${new Date(
+          suggestion?.suggestedDate,
+        ).toLocaleString("pt-BR")}). Deseja continuar mesmo assim?`}
+        confirmButton
+        confirmButtonAction={async () => {
+          setShowSuggestionModal(false);
+
+          try {
+            setLoading(true);
+
+            await createScheduling();
+          } finally {
+            setLoading(false);
+          }
+        }}
+      />
       <h1 className="text-3xl font-bold mb-8">Agendar horário</h1>
-
       <h2 className="text-xl font-semibold mb-4">Escolha uma data</h2>
-
       <div className="flex gap-3 overflow-x-auto pb-4">
         {days.map((day) => {
           const selected = selectedDate?.toDateString() === day.toDateString();
@@ -282,7 +339,6 @@ const Agenda = () => {
           );
         })}
       </div>
-
       <div className="mt-4">
         {snackbar && (
           <Snackbar message={snackbar.message} variant={snackbar.variant} />
@@ -335,12 +391,16 @@ const Agenda = () => {
                   <div className="font-bold">{hour}</div>
 
                   <div className="text-sm mt-2">
-                    {occupied
-                      ? isMine
-                        ? "Seu horário"
-                        : "Ocupado"
-                      : "Disponível"}
+                    {occupied ? (isMine ? null : "Ocupado") : "Disponível"}
                   </div>
+
+                  {occupied && isMine && scheduling?.services?.length > 0 && (
+                    <div className="text-xs mt-1 bg-amber-300">
+                      {scheduling.services
+                        .map((service) => service.name)
+                        .join(", ")}
+                    </div>
+                  )}
 
                   {occupied && (
                     <div className="text-xs mt-1">
@@ -354,11 +414,11 @@ const Agenda = () => {
                   )}
                 </button>
               );
+              ("");
             })}
           </div>
         </>
       )}
-
       {selectedHour && !editingScheduling && (
         <>
           <h2 className="text-xl font-semibold mt-8 mb-4">
@@ -390,7 +450,6 @@ const Agenda = () => {
           </div>
         </>
       )}
-
       {(selectedService || editingScheduling) && (
         <div className="mt-8 border rounded-lg p-6">
           <h2 className="text-xl font-semibold mb-4">Resumo</h2>

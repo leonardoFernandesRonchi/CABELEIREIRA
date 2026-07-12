@@ -4,6 +4,7 @@ const {
   destroyScheduling,
   getMySchedulings,
   getAllSchedulings,
+  findSchedulingSuggestions,
 } = require("../services/schedulingService");
 
 const create = async (req, res, next) => {
@@ -79,10 +80,27 @@ const getAll = async (req, res, next) => {
   }
 };
 
+const getSuggestionsForScheduling = async (req, res, next) => {
+  try {
+    const { dateTime } = req.body;
+    const { loggedUser } = req;
+
+    const suggestions = await findSchedulingSuggestions(
+      loggedUser.id,
+      dateTime,
+    );
+
+    res.status(200).json(suggestions);
+  } catch (error) {
+    next(error);
+  }
+};
+
 module.exports = {
   create,
   update,
   destroy,
   getMy,
   getAll,
+  getSuggestionsForScheduling,
 };

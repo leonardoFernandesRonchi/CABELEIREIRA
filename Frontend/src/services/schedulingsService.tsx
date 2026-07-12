@@ -43,10 +43,18 @@ const index = async () => {
   return response;
 };
 
+const fetchSchedulingSuggestions = async (dateTime: string) => {
+  const response = await apiClient.post("/schedulings/suggestions", {
+    dateTime,
+  });
+  return response;
+};
+
 export default {
   create,
   update,
   destroy,
   fetchMySchedulings,
+  fetchSchedulingSuggestions,
   index,
 };

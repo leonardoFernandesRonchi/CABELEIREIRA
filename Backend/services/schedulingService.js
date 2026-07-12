@@ -1,5 +1,5 @@
 const { Op } = require("sequelize");
-const { Scheduling, User } = require("../models");
+const { Scheduling, User, Service } = require("../models");
 
 const {
   FieldRequiredError,
@@ -201,11 +201,51 @@ async function getAllSchedulings() {
         as: "user",
         attributes: ["id", "username", "email"],
       },
+      {
+        model: Service,
+        as: "services",
+      },
     ],
     order: [["dateTime", "ASC"]],
   });
 }
 
+async function findSchedulingSuggestions(userId, dateTime) {
+  const parsedDate = new Date(dateTime);
+
+  if (isNaN(parsedDate.getTime())) {
+    throw new Error("Data inválida");
+  }
+
+  const startOfWeek = new Date(parsedDate);
+  startOfWeek.setDate(parsedDate.getDate() - parsedDate.getDay());
+  startOfWeek.setHours(0, 0, 0, 0);
+
+  const endOfWeek = new Date(startOfWeek);
+  endOfWeek.setDate(startOfWeek.getDate() + 6);
+  endOfWeek.setHours(23, 59, 59, 999);
+
+  const existingScheduling = await Scheduling.findOne({
+    where: {
+      userId,
+      dateTime: {
+        [Op.between]: [startOfWeek, endOfWeek],
+      },
+    },
+  });
+
+  if (!existingScheduling) {
+    return {
+      hasSuggestion: false,
+    };
+  }
+
+  return {
+    hasSuggestion: true,
+    suggestedDate: existingScheduling.dateTime,
+    scheduling: existingScheduling,
+  };
+}
 module.exports = {
   createScheduling,
 
@@ -216,4 +256,6 @@ module.exports = {
   getMySchedulings,
 
   getAllSchedulings,
+
+  findSchedulingSuggestions,
 };
