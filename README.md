@@ -1,6 +1,6 @@
-# Sistema de Agendamento - API
+# Sistema de Agendamento - API e Frontend
 
-## 📌 Descrição
+## 📌 API
 
 API REST desenvolvida para gerenciamento de agendamentos.
 
@@ -19,13 +19,6 @@ O sistema permite que usuários realizem agendamentos, acompanhem seus horários
 - MySQL
 - JWT para autenticação
 - bcrypt para criptografia de senhas
-
-## Frontend
-
-- React
-- TypeScript
-- TailwindCSS
-- Axios
 
 ---
 
@@ -576,5 +569,69 @@ Pode:
 - Cancelar qualquer agendamento
 
 ---
+
+
+## Testes
+
+Foram desenvolvidos testes unitários utilizando **Jest** para validar as principais regras de negócio da aplicação.
+
+### Funcionalidades testadas
+
+- Criação de agendamentos
+- Atualização de agendamentos
+- Cancelamento de agendamentos
+- Validação de permissões de usuários
+- Validação de conflitos de horário
+- Validação de campos obrigatórios
+- Regras de acesso para administradores e clientes
+
+### Executando os testes
+
+```bash
+npm test
+```
+## Frontend
+
+- React
+- TypeScript
+- TailwindCSS
+- Lodash
+- React-Feather
+- React-Hook-Form
+- Yup (Para validações em formulários)
+- Axios
+
+Acesse a pasta do frontend:
+
+```bash
+cd Frontend
+```
+
+Instale as dependências:
+
+```bash
+npm install
+```
+
+Inicie o projeto na porta 5173:
+```
+npm run dev
+```
+
+### Funcionalidades
+
+- Login e autenticação
+- Sistema de autorização com base em ROLE
+- Cadastro de clientes
+- Agendamento de serviços
+- Edição de agendamentos
+- Cancelamento de agendamentos
+- Seleção de múltiplos serviços
+- Responsividade
+
+
+
+
+
 
 
