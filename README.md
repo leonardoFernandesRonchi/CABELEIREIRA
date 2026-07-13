@@ -22,6 +22,50 @@ O sistema permite que usuários realizem agendamentos, acompanhem seus horários
 
 ---
 
+# 📂 Estrutura do Projeto
+
+Backend
+│
+├── config
+│ └── Configurações da aplicação e banco de dados
+│
+├── controllers
+│ └── Controle das requisições e respostas HTTP
+│
+├── helpers
+│ └── Funções auxiliares reutilizáveis
+│
+├── middlewares
+│ └── Autenticação, autorização e validações intermediárias
+│
+├── migrations
+│ └── Controle da estrutura do banco de dados
+│
+├── models
+│ └── Entidades e relacionamentos do banco de dados
+│
+├── routes
+│ └── Definição dos endpoints da API
+│
+├── seeders
+│ └── Inserção de dados iniciais no banco
+│
+├── services
+│ └── Regras de negócio da aplicação
+│
+├── tests
+│ └── Testes automatizados utilizando Jest
+│
+└── ...
+
+O projeto foi organizado seguindo uma separação de responsabilidades, mantendo componentes, regras de negócio, comunicação com API e configurações separados em suas respectivas camadas.
+
+---
+
+# Frontend
+
+Estrutura principal:
+
 # ⚙️ Instalação
 
 ## Pré-requisitos
@@ -600,6 +644,34 @@ npm test
 - React-Hook-Form
 - Yup (Para validações em formulários)
 - Axios
+
+# 📂 Estrutura do Projeto
+Frontend
+│
+├── components
+│ └── Componentes reutilizáveis da interface
+│
+├── contexts
+│ └── Gerenciamento de estados globais da aplicação
+│
+├── hooks
+│ └── Hooks personalizados com lógicas reutilizáveis
+│
+├── layouts
+│ └── Estruturas de páginas compartilhadas
+│
+├── pages
+│ └── Telas principais da aplicação
+│
+├── providers
+│ └── Provedores globais da aplicação
+│
+├── routes
+│ └── Configuração das rotas e controle de acesso
+│
+├── services
+│ └── Comunicação com a API através do Axios
+│
 
 Acesse a pasta do frontend:
 
