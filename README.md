@@ -24,47 +24,23 @@ O sistema permite que usuários realizem agendamentos, acompanhem seus horários
 
 # 📂 Estrutura do Projeto
 
-Backend
-│
-├── config
-│ └── Configurações da aplicação e banco de dados
-│
-├── controllers
-│ └── Controle das requisições e respostas HTTP
-│
-├── helpers
-│ └── Funções auxiliares reutilizáveis
-│
-├── middlewares
-│ └── Autenticação, autorização e validações intermediárias
-│
-├── migrations
-│ └── Controle da estrutura do banco de dados
-│
-├── models
-│ └── Entidades e relacionamentos do banco de dados
-│
-├── routes
-│ └── Definição dos endpoints da API
-│
-├── seeders
-│ └── Inserção de dados iniciais no banco
-│
-├── services
-│ └── Regras de negócio da aplicação
-│
-├── tests
-│ └── Testes automatizados utilizando Jest
-│
-└── ...
+
+### Descrição das principais camadas:
+
+- **config**: contém configurações da aplicação, banco de dados e variáveis necessárias para execução.
+- **controllers**: camada responsável por lidar com as requisições HTTP e comunicação entre rotas e serviços.
+- **helpers**: funções auxiliares utilizadas em diferentes partes do sistema.
+- **middlewares**: validações executadas antes dos controllers, como autenticação via JWT e controle de permissões.
+- **migrations**: gerenciamento da evolução da estrutura do banco de dados.
+- **models**: define as entidades, atributos e relacionamentos utilizando Sequelize ORM.
+- **routes**: organiza os endpoints disponibilizados pela API.
+- **seeders**: criação de dados iniciais, como usuário administrador.
+- **services**: concentra as regras de negócio, mantendo os controllers mais simples.
+- **tests**: testes automatizados utilizando Jest para validação das funcionalidades.
 
 O projeto foi organizado seguindo uma separação de responsabilidades, mantendo componentes, regras de negócio, comunicação com API e configurações separados em suas respectivas camadas.
 
 ---
-
-# Frontend
-
-Estrutura principal:
 
 # ⚙️ Instalação
 
@@ -647,31 +623,19 @@ npm test
 
 # 📂 Estrutura do Projeto
 Frontend
-│
-├── components
-│ └── Componentes reutilizáveis da interface
-│
-├── contexts
-│ └── Gerenciamento de estados globais da aplicação
-│
-├── hooks
-│ └── Hooks personalizados com lógicas reutilizáveis
-│
-├── layouts
-│ └── Estruturas de páginas compartilhadas
-│
-├── pages
-│ └── Telas principais da aplicação
-│
-├── providers
-│ └── Provedores globais da aplicação
-│
-├── routes
-│ └── Configuração das rotas e controle de acesso
-│
-├── services
-│ └── Comunicação com a API através do Axios
-│
+
+### Descrição das principais pastas:
+
+- **components**: componentes reutilizáveis da interface, evitando repetição de código.
+- **contexts**: gerenciamento de estados globais, como autenticação do usuário.
+- **hooks**: funções personalizadas para reutilização de lógica entre componentes.
+- **layouts**: estruturas compartilhadas entre páginas, como menus e containers.
+- **pages**: páginas principais da aplicação.
+- **providers**: configuração e inicialização de recursos globais.
+- **routes**: definição das rotas da aplicação e proteção de páginas conforme autenticação e permissões.
+- **services**: camada responsável pelas chamadas HTTP e comunicação com a API.
+
+# ⚙️ Instalação
 
 Acesse a pasta do frontend:
 
