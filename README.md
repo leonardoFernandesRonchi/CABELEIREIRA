@@ -610,7 +610,7 @@ Foram desenvolvidos testes unitários utilizando **Jest** para validar as princi
 ```bash
 npm test
 ```
-## Frontend
+# Frontend
 
 - React
 - TypeScript
@@ -621,8 +621,7 @@ npm test
 - Yup (Para validações em formulários)
 - Axios
 
-# 📂 Estrutura do Projeto
-Frontend
+## 📂 Estrutura do Projeto
 
 ### Descrição das principais pastas:
 
