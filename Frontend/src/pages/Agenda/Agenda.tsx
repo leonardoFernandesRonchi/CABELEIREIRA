@@ -10,6 +10,13 @@ import {
 
 type SchedulingStatus = "PENDING" | "CONFIRMED" | "COMPLETED" | "CANCELLED";
 
+type Service = {
+  id: number;
+  name: string;
+  description: string;
+  price: number;
+};
+
 type Scheduling = {
   id: number;
   userId: number;
@@ -20,12 +27,8 @@ type Scheduling = {
     id: number;
     username: string;
   };
-};
-type Service = {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
+
+  services?: Service[];
 };
 
 const statusLabel = {
@@ -43,14 +46,12 @@ const Agenda = () => {
   const [suggestion, setSuggestion] = useState<any>(null);
   const [showSuggestionModal, setShowSuggestionModal] = useState(false);
   const [services, setServices] = useState<Service[]>([]);
+  const [selectedServices, setSelectedServices] = useState<Service[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [snackbar, setSnackbar] = useState<{
     message: string;
     variant: "error" | "success" | "default";
   } | null>(null);
-
-  console.log(schedulings);
-  console.log(error);
 
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedHour, setSelectedHour] = useState<string | null>(null);
@@ -135,7 +136,7 @@ const Agenda = () => {
   };
 
   const createScheduling = async () => {
-    if (!selectedDate || !selectedHour || !selectedService) return;
+    if (!selectedDate || !selectedHour || selectedServices.length === 0) return;
 
     const [hour, minute] = selectedHour.split(":");
 
@@ -150,10 +151,14 @@ const Agenda = () => {
       dateTime: dateTime.toISOString(),
     });
 
-    await schedulingServiceService.create({
-      schedulingId: schedulingResponse.data.id,
-      serviceId: selectedService.id,
-    });
+    await Promise.all(
+      selectedServices.map((service) =>
+        schedulingServiceService.create({
+          schedulingId: schedulingResponse.data.id,
+          serviceId: service.id,
+        }),
+      ),
+    );
 
     setSnackbar({
       message: "Agendamento criado com sucesso",
@@ -162,7 +167,7 @@ const Agenda = () => {
 
     setSelectedDate(null);
     setSelectedHour(null);
-    setSelectedService(null);
+    setSelectedServices([]);
 
     loadSchedulings();
   };
@@ -176,9 +181,9 @@ const Agenda = () => {
       return;
     }
 
-    if (!selectedService) {
+    if (selectedServices.length === 0) {
       setSnackbar({
-        message: "Selecione um serviço",
+        message: "Selecione um ou mais serviços",
         variant: "error",
       });
       return;
@@ -277,15 +282,13 @@ const Agenda = () => {
     } catch (error) {
       console.error(error);
       setSnackbar({
-        message: error.response.data.message,
+        message: error?.response?.data?.message,
         variant: "error",
       });
     } finally {
       setLoading(false);
     }
   };
-
-  console.log(schedulings);
 
   return (
     <div className="max-w-7xl mx-auto p-6">
@@ -295,7 +298,10 @@ const Agenda = () => {
         title="Sugestão de agendamento"
         text={`Você já possui um agendamento nesta semana (${new Date(
           suggestion?.suggestedDate,
-        ).toLocaleString("pt-BR")}). Deseja continuar mesmo assim?`}
+        ).toLocaleString("pt-BR", {
+          dateStyle: "short",
+          timeStyle: "short",
+        })}). Deseja continuar mesmo assim?`}
         confirmButton
         confirmButtonAction={async () => {
           setShowSuggestionModal(false);
@@ -427,12 +433,14 @@ const Agenda = () => {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {services.map((service) => {
-              const selected = selectedService?.id === service.id;
+              const selected = selectedServices.some(
+                (item) => item.id === service.id,
+              );
 
               return (
                 <button
                   key={service.id}
-                  onClick={() => setSelectedService(service)}
+                  onClick={() => toggleService(service)}
                   className={`border rounded-lg p-4 text-left transition ${
                     selected
                       ? "border-green-500 bg-green-100"
@@ -450,7 +458,7 @@ const Agenda = () => {
           </div>
         </>
       )}
-      {(selectedService || editingScheduling) && (
+      {(selectedServices.length > 0 || editingScheduling) && (
         <div className="mt-8 border rounded-lg p-6">
           <h2 className="text-xl font-semibold mb-4">Resumo</h2>
 
@@ -491,14 +499,25 @@ const Agenda = () => {
               <option value="CANCELLED">Cancelado</option>
             </select>
           )}
-          {!editingScheduling && selectedService && (
+          {!editingScheduling && selectedServices.length > 0 && (
             <>
               <p>
-                <strong>Serviço:</strong> {selectedService.name}
+                <strong>Serviços:</strong>
               </p>
 
-              <p>
-                <strong>Valor:</strong> R$ {selectedService.price}
+              <ul className="list-disc ml-6">
+                {selectedServices.map((service) => (
+                  <li key={service.id}>
+                    {service.name} - R$ {service.price}
+                  </li>
+                ))}
+              </ul>
+
+              <p className="mt-2">
+                <strong>Total:</strong> R${" "}
+                {selectedServices
+                  .reduce((total, service) => total + Number(service.price), 0)
+                  .toFixed(2)}
               </p>
             </>
           )}

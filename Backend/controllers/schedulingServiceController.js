@@ -9,8 +9,6 @@ const create = async (req, res, next) => {
 
     const { loggedUser } = req;
 
-    console.log(schedulingId, serviceId, loggedUser.id, loggedUser.role);
-
     const newSchedulingService = await createSchedulingService({
       schedulingId,
 

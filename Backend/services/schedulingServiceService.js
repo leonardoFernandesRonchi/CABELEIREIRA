@@ -12,7 +12,6 @@ async function createSchedulingService({
   userId,
   role,
 }) {
-  console.log(schedulingId, serviceId, userId, role);
   if (!schedulingId) throw new FieldRequiredError("A schedulingId");
 
   if (!serviceId) throw new FieldRequiredError("A serviceId");

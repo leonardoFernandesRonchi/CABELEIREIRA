@@ -132,16 +132,6 @@ async function updateScheduling({
     throw new Error("Não é possível alterar para uma data passada");
   }
 
-  // const conflict = await checkSchedulingConflict({
-  //   dateTime: newDateTime,
-
-  //   schedulingId,
-  // });
-
-  // if (conflict) {
-  //   throw new Error("Esse horário entra em conflito com outro agendamento");
-  // }
-
   if (dateTime !== undefined) {
     schedulingExists.dateTime = newDateTime;
   }

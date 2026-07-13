@@ -38,7 +38,6 @@ const update = async (req, res, next) => {
 const destroy = async (req, res, next) => {
   try {
     const { serviceId } = req.params;
-    console.log(serviceId);
     await destroyService(serviceId);
     res.status(200).json({ message: "Serviço deletado com sucesso" });
   } catch (error) {

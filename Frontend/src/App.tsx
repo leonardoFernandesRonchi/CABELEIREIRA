@@ -1,14 +1,9 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Login, Register, ServicesPage, Agenda } from "./pages";
 import { Main } from "./layouts";
-import { useAuth } from "./hooks/useAuth";
 import { ProtectedRoute, LoggedRoute } from "./routes";
 
 function App() {
-  const { user } = useAuth();
-
-  console.log(user);
-
   return (
     <BrowserRouter>
       <Routes>

@@ -11,9 +11,9 @@ const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       setLoading(true);
       const response = await usersService.fetchUser();
-      console.log(response);
       setUser(response.data?.user);
-    } catch {
+    } catch (error) {
+      console.error(error);
       setUser(null);
     } finally {
       setLoading(false);
