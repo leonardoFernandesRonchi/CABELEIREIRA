@@ -85,7 +85,7 @@ npm install
 Crie um arquivo `.env` na raiz do projeto:
 
 ```env
-PORT=3000
+PORT=3001
 
 DATABASE_HOST=localhost
 DATABASE_PORT=3306
@@ -229,7 +229,7 @@ Authorization: Bearer TOKEN
 URL base:
 
 ```
-http://localhost:3000/api
+http://localhost:3001/api
 ```
 
 ---
@@ -528,7 +528,7 @@ Apenas administradores.
 
 {
   "schedulingId": 1,
-	"serviceId": 1
+  "serviceId": 1
 }
 ```
 
