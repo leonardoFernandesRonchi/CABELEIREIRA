@@ -665,6 +665,14 @@ npm run dev
 - Responsividade
 
 
+# Pontos de Melhoria
+- Usuário ser notificado por email quando houver confirmação/mudança de horários.
+- Admin receber notificação no email quando um novo horário for solicitado.
+- Adicionar Logs
+- Realizar maior componentização da page Agenda, visto que o código está organizado porém muito grande.
+
+
+
 
 
 
