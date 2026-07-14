@@ -670,6 +670,8 @@ npm run dev
 - Admin receber notificação no email quando um novo horário for solicitado.
 - Adicionar Logs
 - Realizar maior componentização da page Agenda, visto que o código está organizado porém muito grande.
+- Adicionar o módulo de gerenciamento de desempenho previsto como funcionalidade extra.
+- Expandir a cobertura de testes automatizados com testes de integração e E2E.
 
 
 
